@@ -37,6 +37,9 @@ def attr(elem, attr):
 WORD_SEPARATORS = re.compile(r'\s|\n|\r|\t|[^a-zA-Z0-9\-_]')
 
 
+# define data structure
+# read and understand the code
+
 class crawler(object):
     """Represents 'Googlebot'. Populates a database by crawling and indexing
     a subset of the Internet.
@@ -50,6 +53,8 @@ class crawler(object):
         self._url_queue = []
         self._doc_id_cache = {}
         self._word_id_cache = {}
+
+        self._inverted_index = {} #implimented
 
         # functions to call when entering and exiting specific tags
         self._enter = defaultdict(lambda *a, **ka: self._visit_ignore)
@@ -116,6 +121,35 @@ class crawler(object):
                     self._url_queue.append((self._fix_url(line.strip(), ""), 0))
         except IOError:
             pass
+
+    def get_inverted_index(self): #implimented
+        """Get the inverted index with word IDs and document IDs"""
+        return {str(word_id): doc_ids for word_id, doc_ids in self._inverted_index.items()}
+    
+    def get_resolved_inverted_index(self): #implimented
+        """Get the inverted index with words and URLs (human-readable)"""
+        resolved = {}
+        
+        for word_id, doc_ids in self._inverted_index.items():
+            word = None
+            for w, w_id in self._word_id_cache.items():
+                if w_id == word_id:
+                    word = w
+                    break
+            
+            if word is None:
+                continue
+            
+            urls = set()
+            for doc_id in doc_ids:
+                for url, d_id in self._doc_id_cache.items():
+                    if d_id == doc_id:
+                        urls.add(url)
+                        break
+            
+            resolved[word] = urls
+        
+        return resolved
 
     # TODO remove me in real version
     def _mock_insert_document(self, url):
@@ -209,6 +243,13 @@ class crawler(object):
         #       font sizes (in self._curr_words), add all the words into the
         #       database for this document
         print("    num words=" + str(len(self._curr_words)))
+
+        for word_id, font_size in self._curr_words: #implimented
+            if word_id not in self._inverted_index:
+                self._inverted_index[word_id] = set()
+                
+            self._inverted_index[word_id].add(self._curr_doc_id)
+
 
     def _increase_font_factor(self, factor):
         """Increade/decrease the current font size."""
@@ -336,3 +377,13 @@ class crawler(object):
 if __name__ == "__main__":
     bot = crawler(None, "urls.txt")
     bot.crawl(depth=1)
+
+    print("\n=== Testing Inverted Index ===") #implimented
+    inverted = bot.get_inverted_index()
+    print(f"Total unique words: {len(inverted)}")
+    
+    resolved = bot.get_resolved_inverted_index()
+    print("\nSample words:")
+    for i, (word, urls) in enumerate(resolved.items()):
+        if i < 5:
+            print(f"  '{word}': {len(urls)} documents")
