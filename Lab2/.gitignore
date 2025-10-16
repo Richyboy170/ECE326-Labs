@@ -1,5 +1,3 @@
-Create a `.gitignore` file to prevent committing secrets:
-
 # AWS Credentials - NEVER COMMIT THESE!
 .env
 *.pem
