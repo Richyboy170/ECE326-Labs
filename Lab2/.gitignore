@@ -1,0 +1,18 @@
+Create a `.gitignore` file to prevent committing secrets:
+
+# AWS Credentials - NEVER COMMIT THESE!
+.env
+*.pem
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
