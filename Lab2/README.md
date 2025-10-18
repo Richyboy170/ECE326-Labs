@@ -7,7 +7,7 @@ Public IP:    3.80.127.131
 
 Key file:     ece326-keypair.pem
 
-This is our .env file (keys are hidden):
+# This is our .env file (keys are hidden):
 
 ## AWS Credentials
 AWS_ACCESS_KEY=xxxxxxxxxxx
