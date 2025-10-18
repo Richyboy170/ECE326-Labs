@@ -8,7 +8,7 @@ import httplib2
 from beaker.middleware import SessionMiddleware
 import bottle
 from bottle import run, get, post, request, response, route, static_file, Bottle
-PORT=8080
+PORT=8081
 
 # Load the keys * Note that ID and SECRET are "xxxxxxxxxx" for submission, used to be loaded from .env
 load_dotenv()
@@ -207,7 +207,7 @@ def process_query():
         displayHTML += "<table id=history style=\"margin: auto; width: 25%; text-align: center; border: 1px solid black;\">"
         displayHTML += "<tr><th> Word </th><th> # Appearences </th></tr>"
         for word in currUserData["recentWords"][::-1]:
-            displayHTML += f"<tr><td>{word}</td><td>{currUserData["keywordUsage"][word]}</td></tr>"
+            displayHTML += f"<tr><td>{word}</td><td>{currUserData['keywordUsage'][word]}</td></tr>"
         displayHTML += "</table>"
 
     else:
@@ -224,4 +224,4 @@ def process_query():
 def server_static(filename):
     return static_file(filename, root='./static')
 
-run(app = appWithSessions, host='localhost', port=PORT)
+run(app = appWithSessions, host='0.0.0.0', port=PORT)
