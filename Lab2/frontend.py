@@ -11,9 +11,11 @@ from bottle import run, get, post, request, response, route, static_file, Bottle
 PORT=8080
 
 # Load the keys * Note that ID and SECRET are "xxxxxxxxxx" for submission, used to be loaded from .env
-#load_dotenv()
-ID = "xxxxxxxxxx"
-SECRET = "xxxxxxxxxx"
+load_dotenv()
+ID = os.getenv("GOOGLE_CLIENT_ID")
+SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+#ID = "xxxxxxxxxx"
+#SECRET = "xxxxxxxxxx"
 
 # Create app
 app = Bottle()
