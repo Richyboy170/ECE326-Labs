@@ -1,3 +1,4 @@
+# README
 IP ADDRESS: http://3.80.127.131:8081/
 
 This is our .env file (keys are hidden):
@@ -17,6 +18,6 @@ UBUNTU_AMI=ami-0c398cb65a93047f2
 GOOGLE_CLIENT_ID=xxxxxxxxxxx
 GOOGLE_CLIENT_SECRET=xxxxxxxxxxx
 
-# Instance ID:  i-09df7f28263415152
-# Public IP:    3.80.127.131
-# Key file:     ece326-keypair.pem
+Instance ID:  i-09df7f28263415152
+Public IP:    3.80.127.131
+Key file:     ece326-keypair.pem
