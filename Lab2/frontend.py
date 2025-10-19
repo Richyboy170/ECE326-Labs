@@ -85,7 +85,8 @@ def loginRedirect():
     flow = flow_from_clientsecrets("client_secret.json",
         scope='https://www.googleapis.com/auth/plus.me  \
         https://www.googleapis.com/auth/userinfo.email',
-        redirect_uri='http://localhost:8080/redirect'
+        redirect_uri='http://localhost:8081/redirect'
+        # redirect_uri='http://3.80.127.131.sslip.io:8081/redirect'
     )
     uri = flow.step1_get_authorize_url()
     bottle.redirect(str(uri))
