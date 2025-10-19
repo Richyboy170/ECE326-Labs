@@ -1,5 +1,5 @@
 # README
-IP ADDRESS: http://3.80.127.131:8081/ and http://3.80.127.131.sslip.io:8081/
+IP ADDRESS: http://3.80.127.131:8080/
 
 Instance ID:  i-09df7f28263415152
 

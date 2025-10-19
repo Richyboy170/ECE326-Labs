@@ -8,7 +8,7 @@ import httplib2
 from beaker.middleware import SessionMiddleware
 import bottle
 from bottle import run, get, post, request, response, route, static_file, Bottle
-PORT=8081
+PORT=8080
 
 # Load the keys * Note that ID and SECRET are "xxxxxxxxxx" for submission, used to be loaded from .env
 load_dotenv()
@@ -85,8 +85,8 @@ def loginRedirect():
     flow = flow_from_clientsecrets("client_secret.json",
         scope='https://www.googleapis.com/auth/plus.me  \
         https://www.googleapis.com/auth/userinfo.email',
-        redirect_uri='http://localhost:8081/redirect'
-        # redirect_uri='http://3.80.127.131.sslip.io:8081/redirect'
+        redirect_uri='http://localhost:8080/redirect'
+        # redirect_uri='http://3.80.127.131.sslip.io:8080/redirect'
     )
     uri = flow.step1_get_authorize_url()
     bottle.redirect(str(uri))
