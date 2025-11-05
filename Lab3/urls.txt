@@ -1,0 +1,4 @@
+https://www.eecg.toronto.edu
+http://www.cs.toronto.edu
+http://web.cs.toronto.edu
+https://engineering.calendar.utoronto.ca/course/ece326h1
