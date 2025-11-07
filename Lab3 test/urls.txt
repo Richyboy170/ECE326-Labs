@@ -1,4 +1,3 @@
-https://www.eecg.toronto.edu
-http://www.cs.toronto.edu
-http://web.cs.toronto.edu
-https://engineering.calendar.utoronto.ca/course/ece326h1
+http://info.cern.ch
+http://www.example.com
+http://httpbin.org/html
