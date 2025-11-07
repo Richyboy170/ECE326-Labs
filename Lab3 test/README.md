@@ -41,7 +41,7 @@ Lab3/
 
 ## Requirements
 
-### Python Dependencies
+### Lab3 Python Dependencies
 ```bash
 pip install beautifulsoup4 bottle urllib3
 ```
@@ -50,6 +50,25 @@ Or install from requirements file:
 ```bash
 pip install -r requirements.txt
 ```
+
+### Lab2 Backend Dependencies (Optional - For AWS Deployment)
+
+If you plan to use Lab2's `backend.py` script to deploy your search engine on AWS EC2, you also need to install Lab2's requirements:
+
+```bash
+# Navigate to Lab2 directory
+cd ../Lab2
+
+# Install Lab2 requirements
+pip install -r requirements.txt
+```
+
+Or install manually:
+```bash
+pip install boto3 python-dotenv oauth2client google-api-python-client httplib2 beaker bottle
+```
+
+**Note:** You only need Lab2 dependencies if you want to use the automated EC2 deployment script. You can skip this if you're manually launching EC2 instances or only running locally.
 
 ## Local Setup and Usage
 
@@ -93,11 +112,25 @@ Then open your browser to `http://localhost:8080`
 
 #### 1. Launch EC2 Instance
 
-If using the Lab 2 backend script:
+**Option A: Using Lab2's Automated Backend Script (Recommended)**
+
+First, ensure you have Lab2's requirements installed (see Requirements section above).
+
 ```bash
-cd Lab2
+# Navigate to Lab2 directory
+cd ../Lab2
+
+# Run the backend deployment script
 python backend.py
 ```
+
+This script will automatically:
+- Create EC2 key pair
+- Set up security groups with proper ports (22, 80, 8080, 8081)
+- Launch an Ubuntu EC2 instance
+- Display connection details
+
+**Option B: Manual EC2 Launch**
 
 Or manually launch an EC2 instance with:
 - Instance type: t2.micro or t3.micro
