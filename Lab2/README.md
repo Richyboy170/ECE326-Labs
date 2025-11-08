@@ -3,7 +3,7 @@ IP ADDRESS: http://3.83.233.24:8080/
 
 Instance ID:  i-0378f9759aaa7d8d4
 Public IP:    3.83.233.24
-Key file:     ece326-keypair.pem
+Key file:     ece326-keypair-lab2.pem
 
 # This is our .env file (keys are hidden):
 
@@ -15,7 +15,7 @@ AWS_SECRET_KEY=xxxxxxxxxxx
 ## AWS Configuration
 AWS_REGION=us-east-1
 
-KEY_NAME=ece326-keypair
+KEY_NAME=ece326-keypair-lab2
 
 SECURITY_GROUP_NAME=ece326-group5
 
@@ -80,7 +80,7 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret_here
 AWS_ACCESS_KEY=your_aws_access_key
 AWS_SECRET_KEY=your_aws_secret_key
 AWS_REGION=us-east-1
-KEY_NAME=ece326-keypair
+KEY_NAME=ece326-keypair-lab2
 SECURITY_GROUP_NAME=ece326-group5
 INSTANCE_TYPE=t3.micro
 UBUNTU_AMI=ami-0c398cb65a93047f2
@@ -133,14 +133,14 @@ This script will:
 ### 2. Connect to Your Instance
 
 ```bash
-ssh -i ece326-keypair.pem ubuntu@YOUR_PUBLIC_IP
+ssh -i ece326-keypair-lab2.pem ubuntu@YOUR_PUBLIC_IP
 ```
 
 ### 3. Copy Files to Instance
 
 ```bash
-scp -i ece326-keypair.pem frontend.py backend.py requirements.txt .env client_secret.json ubuntu@YOUR_PUBLIC_IP:~/
-scp -i ece326-keypair.pem -r static ubuntu@YOUR_PUBLIC_IP:~/
+scp -i ece326-keypair-lab2.pem frontend.py backend.py requirements.txt .env client_secret.json ubuntu@YOUR_PUBLIC_IP:~/
+scp -i ece326-keypair-lab2.pem -r static ubuntu@YOUR_PUBLIC_IP:~/
 ```
 
 ### 4. Set Up the Instance
