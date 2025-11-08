@@ -7,17 +7,30 @@ This lab implements a complete search engine with:
 - Pagination (5 results per page)
 - Error page handling
 
+## Important: Backend Components
+
+**Lab 3 Search Engine Backend** (see BACKEND_README.md for details):
+- `crawler.py` - Web crawler that indexes pages and extracts links
+- `pagerank.py` - PageRank algorithm implementation
+- `storage.py` - SQLite database interface
+
+**Separate Tool** (from Lab 2):
+- `backend.py` - AWS EC2 deployment automation script (NOT part of search engine backend)
+
 ## Project Structure
 
 ```
-Lab3/
-├── crawler.py          # Web crawler with PageRank integration
-├── pagerank.py         # PageRank algorithm implementation
-├── storage.py          # SQLite database interface
-├── frontend.py         # Web frontend with Bottle framework
-├── test_crawler.py     # Unit tests
+Lab3-test/
+├── crawler.py          # [BACKEND] Web crawler with PageRank integration
+├── pagerank.py         # [BACKEND] PageRank algorithm implementation
+├── storage.py          # [BACKEND] SQLite database interface
+├── frontend.py         # [FRONTEND] Web interface with Bottle framework
+├── test_crawler.py     # [BACKEND] Unit tests for crawler and storage
 ├── urls.txt            # Seed URLs for crawling
-├── README.md           # This file
+├── requirements.txt    # Python dependencies
+├── README.md           # This file - Complete guide
+├── BACKEND_README.md   # Backend-specific documentation
+├── backend.py          # [OPTIONAL] Lab2 AWS EC2 automation script
 └── search_engine.db    # SQLite database (generated after crawling)
 ```
 
@@ -41,34 +54,34 @@ Lab3/
 
 ## Requirements
 
-### Lab3 Python Dependencies
+### Lab 3 Python Dependencies (Required)
+
+These are required for the Lab 3 search engine backend and frontend:
+
 ```bash
 pip install beautifulsoup4 bottle urllib3
 ```
 
-Or install from requirements file:
+Or install all dependencies from requirements file:
 ```bash
 pip install -r requirements.txt
 ```
 
-### Lab2 Backend Dependencies (Optional - For AWS Deployment)
+**Core Lab 3 Dependencies:**
+- `beautifulsoup4` - HTML parsing for web crawler
+- `bottle` - Web framework for frontend
+- `urllib3` - HTTP requests for crawler
+- `sqlite3` - Built into Python, no install needed
 
-If you plan to use Lab2's `backend.py` script to deploy your search engine on AWS EC2, you also need to install Lab2's requirements:
+### Optional: Lab 2 AWS EC2 Automation Tool
+
+If you want to use the **optional** `backend.py` script (from Lab2) to **automatically** launch AWS EC2 instances:
 
 ```bash
-# Navigate to Lab2 directory
-cd ../Lab2
-
-# Install Lab2 requirements
-pip install -r requirements.txt
+pip install boto3 python-dotenv
 ```
 
-Or install manually:
-```bash
-pip install boto3 python-dotenv oauth2client google-api-python-client httplib2 beaker bottle
-```
-
-**Note:** You only need Lab2 dependencies if you want to use the automated EC2 deployment script. You can skip this if you're manually launching EC2 instances or only running locally.
+**Note:** The `backend.py` file is an AWS deployment automation tool from Lab 2. It is **NOT** part of the Lab 3 search engine backend (which consists of crawler.py, pagerank.py, and storage.py). You can deploy to AWS manually without using this script.
 
 ## Local Setup and Usage
 
@@ -112,29 +125,26 @@ Then open your browser to `http://localhost:8080`
 
 #### 1. Launch EC2 Instance
 
-**Option A: Using Lab2's Automated Backend Script (Recommended)**
+**Option A: Using backend.py - Automated AWS EC2 Launcher (Optional)**
 
-First, ensure you have Lab2's requirements installed (see Requirements section above).
+If you have the optional `backend.py` script from Lab 2 and installed boto3/python-dotenv:
 
 ```bash
-# Navigate to Lab2 directory
-cd ../Lab2
-
-# Run the backend deployment script
+# Run the AWS EC2 automation script
 python backend.py
 ```
 
-This script will automatically:
+This Lab2 script will automatically:
 - Create EC2 key pair
 - Set up security groups with proper ports (22, 80, 8080, 8081)
 - Launch an Ubuntu EC2 instance
 - Display connection details
 
-**Option B: Manual EC2 Launch**
+**Option B: Manual EC2 Launch (Standard Method)**
 
-Or manually launch an EC2 instance with:
+Manually launch an EC2 instance through AWS Console with:
 - Instance type: t2.micro or t3.micro
-- OS: Ubuntu 20.04 LTS
+- OS: Ubuntu 20.04 LTS or Ubuntu 22.04 LTS
 - Security group: Allow ports 22, 80, 8080
 
 #### 2. Connect to Your Instance
