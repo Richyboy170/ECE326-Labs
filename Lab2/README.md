@@ -1,10 +1,8 @@
 # README
-IP ADDRESS: http://3.80.127.131:8080/
+IP ADDRESS: http://3.83.233.24:8080/
 
-Instance ID:  i-09df7f28263415152
-
-Public IP:    3.80.127.131
-
+Instance ID:  i-0378f9759aaa7d8d4
+Public IP:    3.83.233.24
 Key file:     ece326-keypair.pem
 
 # This is our .env file (keys are hidden):

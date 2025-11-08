@@ -1,5 +1,9 @@
 # ECE326 Lab 3 - Search Engine with PageRank
 
+Instance ID:  i-04398465713c119d3
+Public IP:    98.93.66.138
+Key file:     ece326-keypair.pem
+
 This lab implements a complete search engine with web crawling, PageRank ranking algorithm, and a web-based search interface with persistent SQLite storage.
 
 ## Overview
@@ -359,7 +363,7 @@ Manually launch an EC2 instance through AWS Console with:
 
 #### 2. Connect to Your Instance
 ```bash
-ssh -i ece326-keypair.pem ubuntu@YOUR_PUBLIC_IP
+ssh -i ece326-keypair.pem ubuntu@98.93.66.138
 ```
 
 #### 3. Install Dependencies on EC2
@@ -391,8 +395,13 @@ From your local machine:
 ```bash
 # Copy all necessary files
 scp -i your-key.pem frontend.py ubuntu@YOUR_PUBLIC_IP:~/
+scp -i ece326-keypair.pem frontend.py ubuntu@98.93.66.138:~/
+
 scp -i your-key.pem storage.py ubuntu@YOUR_PUBLIC_IP:~/
+scp -i ece326-keypair.pem storage.py ubuntu@98.93.66.138:~/
+
 scp -i your-key.pem search_engine.db ubuntu@YOUR_PUBLIC_IP:~/
+scp -i ece326-keypair.pem search_engine.db ubuntu@98.93.66.138:~/
 ```
 
 **Note**: You do NOT need to copy `crawler.py` or `pagerank.py` to AWS since the database is already generated.
@@ -412,6 +421,7 @@ nohup python3 frontend.py > frontend.log 2>&1 &
 Open your browser to:
 ```
 http://YOUR_PUBLIC_IP:8080
+http://98.93.66.138:8080
 ```
 
 Replace `YOUR_PUBLIC_IP` with your EC2 instance's public IP address.
