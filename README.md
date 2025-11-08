@@ -134,7 +134,7 @@ pip install beaker google-auth google-auth-oauthlib google-auth-httplib2
 
 1. **Build the search index:**
    ```bash
-   cd Lab3-test
+   cd Lab3
    python crawler.py
    ```
    This will:
@@ -254,7 +254,7 @@ To search different content:
 
 2. **Re-run the crawler:**
    ```bash
-   cd Lab3-test
+   cd Lab3
    python crawler.py
    ```
 
@@ -312,7 +312,7 @@ ECE326-Labs/
 │   ├── backend.py           # Main server with OAuth
 │   ├── userData.json        # User data storage
 │   └── README.md
-├── Lab3-test/               # Full search engine
+├── Lab3/                    # Full search engine
 │   ├── crawler.py           # Web crawler
 │   ├── pagerank.py          # PageRank algorithm
 │   ├── storage.py           # Database layer
