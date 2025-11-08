@@ -1,21 +1,55 @@
 # ECE326 Lab 3 - Search Engine with PageRank
 
-This lab implements a complete search engine with:
-- Web crawler with persistent storage (SQLite)
-- PageRank algorithm for ranking search results
-- Web frontend with search interface
-- Pagination (5 results per page)
-- Error page handling
+This lab implements a complete search engine with web crawling, PageRank ranking algorithm, and a web-based search interface with persistent SQLite storage.
 
-## Important: Backend Components
+## Overview
 
-**Lab 3 Search Engine Backend** (see BACKEND_README.md for details):
-- `crawler.py` - Web crawler that indexes pages and extracts links
-- `pagerank.py` - PageRank algorithm implementation
-- `storage.py` - SQLite database interface
+The search engine consists of two main parts:
 
-**Separate Tool** (from Lab 2):
-- `backend.py` - AWS EC2 deployment automation script (NOT part of search engine backend)
+### Backend Components
+- **crawler.py** - Web crawler that recursively indexes pages and extracts links
+- **pagerank.py** - PageRank algorithm implementation for ranking search results
+- **storage.py** - SQLite database interface for persistent data storage
+
+### Frontend Component
+- **frontend.py** - Web interface built with Bottle framework
+- Search interface with pagination (5 results per page)
+- Results sorted by PageRank scores
+- Database statistics display
+
+### Additional Tool
+- **backend.py** - AWS EC2 deployment automation script from Lab 2 (optional, NOT part of search engine)
+
+## Architecture
+
+```
+urls.txt (Seed URLs)
+    ↓
+[crawler.py]
+    ├── Visits URLs Recursively
+    ├── Parses HTML Pages (BeautifulSoup)
+    ├── Extracts Words → Lexicon
+    ├── Builds Inverted Index (word → documents)
+    ├── Captures Links from <a> tags
+    └── Stores in Database
+         ↓
+[storage.py] - SQLite Database
+    ├── Lexicon Table (word_id, word)
+    ├── DocumentIndex Table (doc_id, url, title, page_rank)
+    ├── InvertedIndex Table (word_id, doc_id, font_size)
+    └── LinkGraph Table (from_doc_id, to_doc_id)
+         ↓
+[pagerank.py]
+    ├── Reads Link Graph from Database
+    ├── Computes PageRank Scores (iterative algorithm)
+    ├── Normalizes Scores
+    └── Updates Database with Scores
+         ↓
+[frontend.py]
+    ├── Reads from search_engine.db
+    ├── Provides Search Interface
+    └── Displays Results Sorted by PageRank
+```
 
 ## Project Structure
 
@@ -29,28 +63,9 @@ Lab3-test/
 ├── urls.txt            # Seed URLs for crawling
 ├── requirements.txt    # Python dependencies
 ├── README.md           # This file - Complete guide
-├── BACKEND_README.md   # Backend-specific documentation
 ├── backend.py          # [OPTIONAL] Lab2 AWS EC2 automation script
 └── search_engine.db    # SQLite database (generated after crawling)
 ```
-
-## Features
-
-### Backend (crawler.py, pagerank.py, storage.py)
-- **Web Crawler**: Recursively crawls web pages and extracts content
-- **Inverted Index**: Maps words to documents for fast search
-- **Lexicon**: Stores all unique words with IDs
-- **Document Index**: Stores URLs, titles, and PageRank scores
-- **Link Graph**: Tracks links between pages for PageRank computation
-- **PageRank Algorithm**: Ranks pages based on link structure
-- **Persistent Storage**: SQLite database for all data
-
-### Frontend (frontend.py)
-- **Search Interface**: Clean, Google-like search page
-- **Search Results**: Displays results sorted by PageRank scores
-- **Pagination**: Shows 5 results per page with navigation controls
-- **Error Handling**: Custom 404 and 405 error pages
-- **Statistics**: Displays database statistics on home page
 
 ## Requirements
 
@@ -83,11 +98,162 @@ pip install boto3 python-dotenv
 
 **Note:** The `backend.py` file is an AWS deployment automation tool from Lab 2. It is **NOT** part of the Lab 3 search engine backend (which consists of crawler.py, pagerank.py, and storage.py). You can deploy to AWS manually without using this script.
 
+## Backend Components Details
+
+### 1. crawler.py - Web Crawler
+
+The crawler is the main backend component that orchestrates the entire indexing process.
+
+**Key Features:**
+- Reads seed URLs from `urls.txt`
+- Recursively crawls pages to specified depth
+- Parses HTML using BeautifulSoup
+- Extracts text content with font size weights (h1-h5, b, i, strong, em)
+- Builds lexicon (all unique words)
+- Creates inverted index (word → document mappings)
+- **Captures link relations from anchor (`<a>`) tags** (Lab 3 requirement)
+- Filters common stop words
+- Stores all data in SQLite database
+- 3-second timeout per page to prevent hanging
+
+**Important Implementation Details:**
+- **Link Extraction**: The `_visit_a()` method captures links between pages from `<a href>` tags
+- **First Link Only**: Only the first link between two documents is counted
+- **Font Size Weighting**: Words in headers and emphasized text get higher weights
+
+**Usage:**
+```bash
+# Basic usage (default: urls.txt, search_engine.db, depth=1)
+python crawler.py
+
+# Custom parameters
+python crawler.py <url_file> <db_file> <depth>
+
+# Example
+python crawler.py urls.txt search_engine.db 1
+```
+
+**Process Flow:**
+1. Initialize database connection
+2. Load seed URLs from file
+3. For each URL (breadth-first):
+   - Fetch and parse HTML
+   - Extract title and update document
+   - Parse all text content
+   - Extract all outgoing links (anchor tags)
+   - Store words in inverted index
+   - Store links in link graph
+4. Compute PageRank scores
+5. Update database with scores
+6. Display statistics
+
+### 2. pagerank.py - PageRank Algorithm
+
+Implements Google's PageRank algorithm to rank documents based on link structure.
+
+**Algorithm:**
+```
+PR(A) = (1-d) + d * Σ(PR(Ti) / C(Ti))
+
+Where:
+- d = damping factor (0.85)
+- Ti = pages that link to page A
+- C(Ti) = number of outbound links from page Ti
+```
+
+**Key Features:**
+- Iterative computation (default: 20 iterations)
+- Handles pages with no outbound links
+- Normalizes scores to sum to 1.0
+- Returns importance score for each page
+
+**Functions:**
+- `page_rank(links, num_iterations, initial_pr)` - Computes raw PageRank scores
+- `normalize_page_rank(scores)` - Normalizes scores to sum to 1.0
+
+### 3. storage.py - Persistent Storage Interface
+
+Provides SQLite database interface for storing all search engine data.
+
+**Key Methods:**
+- `insert_word(word)` - Add word to lexicon, return word_id
+- `insert_document(url, title)` - Add document, return doc_id
+- `insert_inverted_index(word_id, doc_id, font_size)` - Link word to document
+- `insert_link(from_doc_id, to_doc_id)` - Add link to graph
+- `get_link_graph()` - Get complete link structure for PageRank
+- `update_page_ranks(scores)` - Update PageRank scores
+- `search_word(word, limit)` - Search for word, return results sorted by PageRank
+- `get_statistics()` - Get database statistics
+
+**Features:**
+- Automatic duplicate handling (UNIQUE constraints)
+- Indexed columns for fast queries
+- Context manager support (`with` statement)
+- Transaction management (automatic commit)
+
+## Database Schema
+
+### Lexicon Table
+Stores all unique words with assigned IDs.
+```sql
+CREATE TABLE Lexicon (
+    word_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    word TEXT UNIQUE NOT NULL
+);
+```
+
+### DocumentIndex Table
+Stores URLs with titles and PageRank scores.
+```sql
+CREATE TABLE DocumentIndex (
+    doc_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    url TEXT UNIQUE NOT NULL,
+    title TEXT,
+    page_rank REAL DEFAULT 1.0
+);
+```
+
+### InvertedIndex Table
+Maps words to documents with font size information.
+```sql
+CREATE TABLE InvertedIndex (
+    word_id INTEGER,
+    doc_id INTEGER,
+    font_size INTEGER,
+    PRIMARY KEY (word_id, doc_id),
+    FOREIGN KEY (word_id) REFERENCES Lexicon(word_id),
+    FOREIGN KEY (doc_id) REFERENCES DocumentIndex(doc_id)
+);
+```
+
+### LinkGraph Table
+Stores links between documents for PageRank computation.
+```sql
+CREATE TABLE LinkGraph (
+    from_doc_id INTEGER,
+    to_doc_id INTEGER,
+    PRIMARY KEY (from_doc_id, to_doc_id),
+    FOREIGN KEY (from_doc_id) REFERENCES DocumentIndex(doc_id),
+    FOREIGN KEY (to_doc_id) REFERENCES DocumentIndex(doc_id)
+);
+```
+
 ## Local Setup and Usage
 
 ### Step 1: Run Unit Tests
 ```bash
 python test_crawler.py
+```
+
+Expected output:
+```
+ECE326 Lab 3 - Unit Tests
+==============================================================
+
+test_simple_graph (test_crawler.TestPageRank) ... ok
+test_linear_graph (test_crawler.TestPageRank) ... ok
+...
+All tests passed!
 ```
 
 ### Step 2: Run the Crawler
@@ -107,12 +273,56 @@ The crawler will:
 5. Compute PageRank scores
 6. Store everything in `search_engine.db`
 
+**Expected Output:**
+```
+============================================================
+ECE326 Lab 3 - Web Crawler with PageRank
+============================================================
+URL file: urls.txt
+Database: search_engine.db
+Crawl depth: 1
+============================================================
+
+Starting crawl with depth=1, timeout=3s
+Initial URL queue size: 2
+
+Crawling: http://www.eecg.toronto.edu (depth=0)
+  Document title: Edward S. Rogers Sr. Department of Electrical & Computer...
+  Number of words: 1523
+...
+
+Crawling completed. Total documents crawled: 15
+
+Computing PageRank scores...
+  Link graph size: 12 documents with outgoing links
+  PageRank computed for 15 documents
+  PageRank scores updated in database
+
+============================================================
+Crawl Statistics:
+============================================================
+Total words in lexicon:     3247
+Total documents indexed:    15
+Total inverted index entries: 8934
+Total links in graph:       47
+============================================================
+
+Crawling completed successfully!
+Database saved to: search_engine.db
+```
+
 ### Step 3: Start the Frontend
 ```bash
 python frontend.py
 ```
 
 Then open your browser to `http://localhost:8080`
+
+### Step 4: Search and Browse
+1. Enter a keyword (e.g., "python")
+2. View results sorted by PageRank
+3. Navigate between pages using pagination controls
+4. Check statistics on home page
 
 ## AWS Deployment Instructions
 
@@ -149,7 +359,7 @@ Manually launch an EC2 instance through AWS Console with:
 
 #### 2. Connect to Your Instance
 ```bash
-ssh -i ece326-keypair.pem ubuntu@3.88.90.1
+ssh -i ece326-keypair.pem ubuntu@YOUR_PUBLIC_IP
 ```
 
 #### 3. Install Dependencies on EC2
@@ -181,14 +391,8 @@ From your local machine:
 ```bash
 # Copy all necessary files
 scp -i your-key.pem frontend.py ubuntu@YOUR_PUBLIC_IP:~/
-scp -i ece326-keypair.pem frontend.py ubuntu@3.88.90.1:~/
-
 scp -i your-key.pem storage.py ubuntu@YOUR_PUBLIC_IP:~/
-scp -i ece326-keypair.pem storage.py ubuntu@3.88.90.1:~/
-
 scp -i your-key.pem search_engine.db ubuntu@YOUR_PUBLIC_IP:~/
-scp -i ece326-keypair.pem search_engine.db ubuntu@3.88.90.1:~/
-
 ```
 
 **Note**: You do NOT need to copy `crawler.py` or `pagerank.py` to AWS since the database is already generated.
@@ -290,6 +494,16 @@ pkill -f frontend.py
 nohup python3 frontend.py > frontend.log 2>&1 &
 ```
 
+#### Database Issues:
+```bash
+# Check database has data
+sqlite3 search_engine.db "SELECT COUNT(*) FROM DocumentIndex;"
+
+# Verify PageRank was computed
+sqlite3 search_engine.db "SELECT AVG(page_rank) FROM DocumentIndex;"
+# Should be non-zero
+```
+
 ## Benchmark Setup and Results
 
 ### Benchmark Methodology
@@ -363,63 +577,36 @@ However, the trade-off is worthwhile because:
 - Search results are ranked by importance
 - System is more scalable and maintainable
 
-## Database Schema
+## Testing
 
-### Lexicon Table
-Stores all unique words with assigned IDs.
-```sql
-CREATE TABLE Lexicon (
-    word_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    word TEXT UNIQUE NOT NULL
-);
+Run all unit tests:
+```bash
+python test_crawler.py
 ```
 
-### DocumentIndex Table
-Stores URLs with titles and PageRank scores.
-```sql
-CREATE TABLE DocumentIndex (
-    doc_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    url TEXT UNIQUE NOT NULL,
-    title TEXT,
-    page_rank REAL DEFAULT 1.0
-);
-```
+### Test Categories
 
-### InvertedIndex Table
-Maps words to documents with font size information.
-```sql
-CREATE TABLE InvertedIndex (
-    word_id INTEGER,
-    doc_id INTEGER,
-    font_size INTEGER,
-    PRIMARY KEY (word_id, doc_id)
-);
-```
+1. **PageRank Tests** (`TestPageRank`)
+   - Simple 3-node graph
+   - Linear chain graph
+   - Isolated pages (no outgoing links)
+   - Normalization
 
-### LinkGraph Table
-Stores links between documents for PageRank computation.
-```sql
-CREATE TABLE LinkGraph (
-    from_doc_id INTEGER,
-    to_doc_id INTEGER,
-    PRIMARY KEY (from_doc_id, to_doc_id)
-);
-```
+2. **Database Tests** (`TestSearchEngineDB`)
+   - Insert words (with duplicates)
+   - Insert documents (with duplicates)
+   - Update document titles
+   - Inverted index operations
+   - Link graph operations
+   - PageRank updates
+   - Search with PageRank sorting
+   - Database statistics
 
-## PageRank Algorithm
+3. **Integration Tests** (`TestIntegration`)
+   - Complete workflow (index → link → PageRank → search)
+   - Verify search results sorted by PageRank
 
-The PageRank algorithm ranks pages based on their link structure:
-
-```
-PR(A) = (1-d) + d * Σ(PR(Ti) / C(Ti))
-```
-
-Where:
-- `d` = damping factor (0.85)
-- `Ti` = pages that link to page A
-- `C(Ti)` = number of outbound links from page Ti
-
-The algorithm iteratively computes scores until convergence (typically 20 iterations).
+All tests should pass before submitting.
 
 ## Usage Examples
 
@@ -449,19 +636,32 @@ python crawler.py my_urls.txt my_search.db 2
 python frontend.py
 ```
 
-## Testing
+## Requirements Compliance (Lab 3 PDF)
 
-Run all unit tests:
-```bash
-python test_crawler.py
-```
+### B1. PageRank Algorithm ✓
+- Implemented in `pagerank.py`
+- Ranks documents based on number of citations (incoming links)
+- Uses iterative algorithm with damping factor 0.85
 
-Tests cover:
-- PageRank algorithm correctness
-- Database operations (insert, update, search)
-- Link graph construction
-- Inverted index functionality
-- Complete integration workflow
+### B2. Compute PageRank Scores ✓
+- **Links discovered from anchor (`<a>`) tags** - See crawler.py
+- Link relations stored in LinkGraph table
+- PageRank function called after crawling completes
+- Scores stored in persistent storage
+
+### B3. Persistent Storage ✓
+- Uses SQLite3 database
+- Stores all required data:
+  - ✓ Lexicon (words with IDs)
+  - ✓ Document Index (URLs, titles, PageRank scores)
+  - ✓ Inverted Index (word-document mappings)
+  - ✓ Link Graph (page-to-page links)
+
+### B4. Requirements ✓
+- ✓ Computes PageRank for each page visited by crawler
+- ✓ Takes URLs from "urls.txt"
+- ✓ Generates and stores lexicon, document index, inverted index, and PageRank scores
+- ✓ All data in persistent storage (SQLite)
 
 ## Security Notes
 
