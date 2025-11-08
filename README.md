@@ -117,6 +117,62 @@ LinkGraph
 | **Session Management (Lab2)** | Beaker |
 | **Deployment** | AWS EC2 (Ubuntu) |
 
+## 🚀 AWS Deployment & Benchmarking Tools
+
+**NEW:** Automated tools for deploying to AWS EC2 and running performance benchmarks!
+
+### Quick Deploy to AWS
+
+Deploy both Lab2 and Lab3 to AWS EC2 instances in one command:
+
+```bash
+# Install deployment tools
+pip install boto3 python-dotenv
+
+# Configure AWS credentials
+cp .env.example .env
+# Edit .env with your AWS credentials
+
+# Deploy both labs to EC2
+python aws_ec2_installer.py --lab both --action all
+```
+
+### Run Performance Benchmarks
+
+Compare Lab2 vs Lab3 performance:
+
+```bash
+# Run comprehensive benchmark suite
+python benchmark_comparison.py \
+    --lab2-url http://YOUR_LAB2_IP:8080 \
+    --lab3-url http://YOUR_LAB3_IP:8080
+
+# Results saved to BENCHMARK_RESULTS.md
+```
+
+### Available Tools
+
+| Tool | Purpose | Documentation |
+|------|---------|---------------|
+| `aws_ec2_installer.py` | Automated EC2 deployment | [Quick Start](QUICKSTART.md) |
+| `benchmark_comparison.py` | Performance benchmarking | [Full Guide](AWS_DEPLOYMENT_GUIDE.md) |
+| `BENCHMARK_COMPARISON.md` | Test structure analysis | Included in repo |
+
+### Key Features
+
+- ✅ **One-command deployment** to AWS EC2
+- ✅ **Automatic dependency installation** on instances
+- ✅ **Comprehensive benchmarking** with ApacheBench
+- ✅ **Detailed comparison reports** (Lab2 vs Lab3)
+- ✅ **Resource monitoring** (CPU, memory, network)
+- ✅ **Cost-effective** (AWS Free Tier eligible)
+
+### Documentation
+
+- **[QUICKSTART.md](QUICKSTART.md)** - 5-minute deployment guide
+- **[AWS_DEPLOYMENT_GUIDE.md](AWS_DEPLOYMENT_GUIDE.md)** - Complete deployment manual
+- **[BENCHMARK_COMPARISON.md](BENCHMARK_COMPARISON.md)** - Test analysis
+
 ## Getting Started
 
 ### Prerequisites
@@ -305,21 +361,31 @@ The homepage shows:
 
 ```
 ECE326-Labs/
-├── Lab1/                    # Keyword analysis tool
-│   ├── server_starter.py    # Web server
+├── Lab1/                         # Keyword analysis tool
+│   ├── server_starter.py         # Web server
 │   └── README.md
-├── Lab2/                    # Authenticated search
-│   ├── backend.py           # Main server with OAuth
-│   ├── userData.json        # User data storage
+├── Lab2/                         # Authenticated search
+│   ├── backend.py                # Main server with OAuth
+│   ├── frontend.py               # Web frontend
+│   ├── userData.json             # User data storage
 │   └── README.md
-├── Lab3/                    # Full search engine
-│   ├── crawler.py           # Web crawler
-│   ├── pagerank.py          # PageRank algorithm
-│   ├── storage.py           # Database layer
-│   ├── frontend.py          # Web interface
-│   ├── urls.txt             # Seed URLs
+├── Lab3/                         # Full search engine
+│   ├── crawler.py                # Web crawler
+│   ├── pagerank.py               # PageRank algorithm
+│   ├── storage.py                # Database layer
+│   ├── frontend.py               # Web interface
+│   ├── urls.txt                  # Seed URLs
+│   ├── search_engine.db          # SQLite database (generated)
 │   └── README.md
-└── README.md                # This file
+├── aws_ec2_installer.py          # 🆕 AWS EC2 deployment automation
+├── benchmark_comparison.py       # 🆕 Performance benchmarking tool
+├── requirements-deployment.txt   # 🆕 Deployment tool dependencies
+├── .env.example                  # 🆕 Environment config template
+├── QUICKSTART.md                 # 🆕 5-minute deployment guide
+├── AWS_DEPLOYMENT_GUIDE.md       # 🆕 Complete deployment manual
+├── BENCHMARK_COMPARISON.md       # Test structure analysis
+├── BENCHMARK_RESULTS.md          # Generated benchmark report
+└── README.md                     # This file
 ```
 
 ## Educational Context

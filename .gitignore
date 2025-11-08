@@ -28,6 +28,11 @@ Thumbs.db
 .env
 *.pem
 
+# AWS/Google Credentials (NEVER COMMIT THESE!)
+client_secret*.json
+credentials*.json
+*.pem
+
 # Database
 *.db
 *.sqlite
@@ -35,6 +40,8 @@ Thumbs.db
 
 # Logs
 *.log
+frontend.log
+nohup.out
 
 # Testing
 .pytest_cache/
@@ -44,3 +51,10 @@ htmlcov/
 # Temporary files
 *.tmp
 sessions/
+
+# Benchmark results (optional - can commit if desired)
+# BENCHMARK_RESULTS.md
+# BENCHMARK_RESULTS.json
+
+# User data
+userData.json
