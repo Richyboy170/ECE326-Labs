@@ -139,7 +139,7 @@ Or manually launch an EC2 instance with:
 
 #### 2. Connect to Your Instance
 ```bash
-ssh -i your-key.pem ubuntu@YOUR_PUBLIC_IP
+ssh -i ece326-keypair.pem ubuntu@3.88.90.1
 ```
 
 #### 3. Install Dependencies on EC2
@@ -171,8 +171,14 @@ From your local machine:
 ```bash
 # Copy all necessary files
 scp -i your-key.pem frontend.py ubuntu@YOUR_PUBLIC_IP:~/
+scp -i ece326-keypair.pem frontend.py ubuntu@3.88.90.1:~/
+
 scp -i your-key.pem storage.py ubuntu@YOUR_PUBLIC_IP:~/
+scp -i ece326-keypair.pem storage.py ubuntu@3.88.90.1:~/
+
 scp -i your-key.pem search_engine.db ubuntu@YOUR_PUBLIC_IP:~/
+scp -i ece326-keypair.pem search_engine.db ubuntu@3.88.90.1:~/
+
 ```
 
 **Note**: You do NOT need to copy `crawler.py` or `pagerank.py` to AWS since the database is already generated.
