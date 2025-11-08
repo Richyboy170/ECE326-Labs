@@ -177,6 +177,108 @@ python server_starter.py
 
 Access at: `http://localhost:8081`
 
+## Using the Website
+
+Once you have the search engine running (Lab 3), here's how to get the best results:
+
+### Basic Usage
+
+1. **Navigate to the homepage:** `http://localhost:8080`
+2. **Enter your search query** in the search box
+3. **Press Enter** or click the search button
+4. **Browse results** ranked by PageRank score
+
+### Recommended Search Queries
+
+The search engine works best with **single keyword queries** that match the content you've crawled. Here are example queries based on typical crawled content:
+
+#### General Queries
+```
+python        # Find pages about Python programming
+algorithm     # Discover algorithm-related content
+database      # Search for database topics
+security      # Find security-related pages
+network       # Network and connectivity topics
+```
+
+#### Technical Topics
+```
+javascript    # Web development content
+machine       # Machine learning topics
+cloud         # Cloud computing pages
+api           # API documentation and guides
+tutorial      # Learning resources
+```
+
+#### Academic Content
+```
+research      # Research papers and studies
+course        # Course materials
+lecture       # Lecture notes
+university    # Academic institutions
+student       # Student resources
+```
+
+### Tips for Best Results
+
+1. **Use single words:** The search extracts the first word from your query
+   - Good: `python`
+   - Also works: `python programming` (searches for "python")
+
+2. **Match indexed content:** Results depend on what URLs you've crawled
+   - Check `urls.txt` to see what sites are indexed
+   - Re-run `crawler.py` to add more content
+
+3. **Understand PageRank ordering:** Higher-ranked pages appear first
+   - Pages with more incoming links rank higher
+   - Authority pages rise to the top
+
+4. **Use pagination:** Navigate through results with page numbers
+   - 5 results per page
+   - Check multiple pages for comprehensive results
+
+5. **Case-sensitive search:** Current implementation matches case
+   - `Python` ≠ `python`
+   - Use lowercase for common terms
+
+### Customizing Your Search Index
+
+To search different content:
+
+1. **Edit `urls.txt`** with your desired seed URLs:
+   ```
+   https://en.wikipedia.org/wiki/Python_(programming_language)
+   https://docs.python.org/3/
+   https://www.example.com/tutorials
+   ```
+
+2. **Re-run the crawler:**
+   ```bash
+   cd Lab3-test
+   python crawler.py
+   ```
+
+3. **Restart the server:**
+   ```bash
+   python frontend.py
+   ```
+
+4. **Search your new content!**
+
+### Understanding Search Results
+
+Each result displays:
+- **Title:** Page title from HTML `<title>` tag
+- **URL:** Full web address of the page
+- **PageRank Score:** Numerical ranking (higher = more authoritative)
+
+### Database Statistics
+
+The homepage shows:
+- **Total documents** indexed
+- **Total words** in lexicon
+- **Database size** and location
+
 ## Features
 
 ### Search Capabilities
