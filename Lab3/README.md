@@ -1,5 +1,7 @@
 # ECE326 Lab 3 - Search Engine with PageRank
 
+IP ADDRESS: http://98.80.72.155:8080
+
 Instance ID:  i-056b3b790591b5bb9
 Public IP:    98.80.72.155
 Key file:     ece326-keypair.pem
@@ -718,7 +720,7 @@ htop
 
 Replace `YOUR_EC2_PUBLIC_IP` with your actual EC2 instance public IP address.
 
-Example: http://3.80.127.131:8080
+Example: http://98.80.72.155:8080
 
 ## Authors
 
