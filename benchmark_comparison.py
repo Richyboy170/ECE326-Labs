@@ -11,6 +11,8 @@ This script automates the benchmarking process for both Lab2 and Lab3:
 
 Usage:
     python benchmark_comparison.py --lab2-url <URL> --lab3-url <URL>
+    python benchmark_comparison.py --lab2-url http://3.91.159.253:8080/ --lab3-url http://98.80.72.155:8080/
+
 
 Examples:
     # Benchmark both labs on different EC2 instances
