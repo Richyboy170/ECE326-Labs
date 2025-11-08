@@ -54,7 +54,7 @@ urls.txt (Seed URLs)
 ## Project Structure
 
 ```
-Lab3-test/
+Lab3/
 ├── crawler.py          # [BACKEND] Web crawler with PageRank integration
 ├── pagerank.py         # [BACKEND] PageRank algorithm implementation
 ├── storage.py          # [BACKEND] SQLite database interface
