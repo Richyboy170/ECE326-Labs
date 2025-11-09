@@ -141,10 +141,6 @@ def logout():
 @app.route("/search")
 def process_query():
     
-    urls = [
-        f"https://example{i}.com" for i in range(1, 26)  # 25 URLs
-    ]
-    
     # Get email from session
     session = request.environ.get('beaker.session')
     email = session.get('email', None)
