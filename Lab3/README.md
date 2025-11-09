@@ -1,11 +1,10 @@
 # ECE326 Lab 3 - Search Engine with PageRank
 
-IP ADDRESS: http://98.80.72.155:8080
+IP ADDRESS: http://204.236.209.159:8080
 
-Instance ID:  i-056b3b790591b5bb9
-Public IP:    98.80.72.155
+Instance ID:  i-0ee9470aa16dc1a09
+Public IP:    204.236.209.159
 Key file:     ece326-keypair.pem
-
 This lab implements a complete search engine with web crawling, PageRank ranking algorithm, and a web-based search interface with persistent SQLite storage.
 
 ## Overview
@@ -365,7 +364,7 @@ Manually launch an EC2 instance through AWS Console with:
 
 #### 2. Connect to Your Instance
 ```bash
-ssh -i ece326-keypair.pem ubuntu@98.80.72.155
+ssh -i ece326-keypair.pem ubuntu@204.236.209.159
 ```
 
 #### 3. Install Dependencies on EC2
@@ -397,20 +396,20 @@ From your local machine:
 ```bash
 # Copy all necessary files
 scp -i your-key.pem frontend.py ubuntu@YOUR_PUBLIC_IP:~/
-scp -i ece326-keypair.pem frontend.py ubuntu@98.80.72.155:~/
+scp -i ece326-keypair.pem frontend.py ubuntu@204.236.209.159:~/
 
 scp -i your-key.pem storage.py ubuntu@YOUR_PUBLIC_IP:~/
-scp -i ece326-keypair.pem storage.py ubuntu@98.80.72.155:~/
+scp -i ece326-keypair.pem storage.py ubuntu@204.236.209.159:~/
 
 scp -i your-key.pem search_engine.db ubuntu@YOUR_PUBLIC_IP:~/
-scp -i ece326-keypair.pem search_engine.db ubuntu@98.80.72.155:~/
+scp -i ece326-keypair.pem search_engine.db ubuntu@204.236.209.159:~/
 ```
 ## This is How to update frontend.py on EC2
         # 1. Upload the updated frontend.py
-        scp -i ece326-keypair.pem frontend.py ubuntu@98.80.72.155:~/
+        scp -i ece326-keypair.pem frontend.py ubuntu@204.236.209.159:~/
 
         # 2. SSH into the instance
-        ssh -i ece326-keypair.pem ubuntu@98.80.72.155
+        ssh -i ece326-keypair.pem ubuntu@204.236.209.159
 
         # 3. Once inside, kill the old process
         pkill -f frontend.py
@@ -441,7 +440,7 @@ nohup python3 frontend.py > frontend.log 2>&1 &
 Open your browser to:
 ```
 http://YOUR_PUBLIC_IP:8080
-http://98.80.72.155:8080
+http://204.236.209.159:8080
 ```
 
 Replace `YOUR_PUBLIC_IP` with your EC2 instance's public IP address.
