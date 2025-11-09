@@ -1,4 +1,16 @@
-import json, os
+"""
+Search Engine Frontend with Pagination
+
+This frontend provides a web interface for searching indexed documents.
+Features:
+- Search query interface with OAuth authentication
+- Results sorted by PageRank scores
+- Pagination (5 results per page)
+- Error page handling (404, 405 errors)
+"""
+
+import json
+import os
 from dotenv import load_dotenv
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.client import flow_from_clientsecrets
@@ -8,9 +20,10 @@ import httplib2
 from beaker.middleware import SessionMiddleware
 import bottle
 from bottle import run, get, post, request, response, route, error, template, static_file, Bottle
-PORT=8080
 from storage import SearchEngineDB
 
+# Configuration
+PORT = 8080
 DB_FILE = "search_engine.db"
 RESULTS_PER_PAGE = 5
 
@@ -66,7 +79,7 @@ def updateAppearences(list, dict):
 # Query screen displayed when /
 @app.route('/')
 def home():
-    
+
     # Get email from session
     session = request.environ.get('beaker.session')
     email = session.get('email', None)
@@ -82,12 +95,12 @@ def home():
         actionURL = "/login"
         loginStatus = "Not logged in"
 
-    return bottle.template('static/index.html', loginStatus=loginStatus, actionURL = actionURL, buttonText = buttonText)
+    return bottle.template('static/index.html', loginStatus=loginStatus, actionURL=actionURL, buttonText=buttonText)
 
 # If login button pressed, this function will redirect to google login screen
 @app.route('/login', method='GET')
 def loginRedirect():
-    
+
     # Redirects to google login screen  * Note that client_secret.json is hidden
     flow = flow_from_clientsecrets("client_secret.json",
         scope='https://www.googleapis.com/auth/plus.me  \
@@ -100,7 +113,7 @@ def loginRedirect():
 # Handles google login screen
 @app.route('/redirect')
 def redirect_page():
-    
+
     # Handles google login
     code = request.query.get("code", "")
     scope = ['profile', 'email']
@@ -140,7 +153,7 @@ def logout():
 # When form is submitted, query is processed and screen will display tables with updated info based on query
 @app.route("/search")
 def process_query():
-    
+
     # Get email from session
     session = request.environ.get('beaker.session')
     email = session.get('email', None)
@@ -160,17 +173,17 @@ def process_query():
     query = request.query.keywords or ""
     if query != "":
         query = query.split()[0]
-    
+
     # Get the current page number (default is 1)
     page = int(request.query.page or 1)
-    perPage = 5
+    perPage = RESULTS_PER_PAGE
 
     # Get urls from database (urls come back as a list of tuples of (url, page title, pagerank))
     try:
         with get_db() as db:
             urls = db.search_word(query, limit=1000)
     except Exception as e:
-        return f"<body style=\"text-align: center;\"><h1>Error: {e}</h1><a href=\"/\">Return to EUREKA! Homepage</a></body>"
+        return error_page(f"Database error: {e}", 500)
 
     # Display only select number of URLs (in our case 5)
     start = (page - 1) * perPage
@@ -178,19 +191,45 @@ def process_query():
     pageUrls = urls[start:end]
     totalPages = (len(urls) + perPage - 1) // perPage or 1
 
-    return template('static/resultPage.tpl', loginStatus=loginStatus, actionURL = actionURL, buttonText = buttonText, urls=pageUrls, query=query, page=page, total_pages=totalPages)
+    return template('static/resultPage.tpl', loginStatus=loginStatus, actionURL=actionURL, buttonText=buttonText, urls=pageUrls, query=query, page=page, total_pages=totalPages)
 
 # Serves Logo for query page
 @app.route('/static/<filename>')
 def server_static(filename):
     return static_file(filename, root='./static')
 
+def error_page(message="Page not found", code=404):
+    """Generate error page"""
+    response.status = code
+    return f'<body style="text-align: center;"><h1>Error: {code} ({message})</h1><a href="/">Return to EUREKA! Homepage</a></body>'
+
 @app.error(404)
 def error404(error):
-    return "<body style=\"text-align: center;\"><h1>Error: 404 (Page not found)</h1><a href=\"/\">Return to EUREKA! Homepage</a></body>"
+    return error_page("Page not found", 404)
 
 @app.error(405)
 def error405(error):
-    return "<body style=\"text-align: center;\"><h1>Error: 405 (HTTP method not allowed)</h1><a href=\"/\">Return to EUREKA! Homepage</a></body>"
+    return error_page("HTTP method not allowed", 405)
 
-bottle.run(app=appWithSessions, host='0.0.0.0', port=PORT, debug=False)
+@app.error(500)
+def error500(error):
+    return error_page("Internal server error", 500)
+
+if __name__ == "__main__":
+    print("=" * 60)
+    print("ECE326 Lab 3 - Search Engine Frontend")
+    print("=" * 60)
+    print(f"Database: {DB_FILE}")
+    print(f"Results per page: {RESULTS_PER_PAGE}")
+    print(f"Port: {PORT}")
+    print("=" * 60)
+
+    if not os.path.exists(DB_FILE):
+        print("\nWARNING: Database file not found!")
+        print(f"Please run the crawler first to generate {DB_FILE}")
+        print("=" * 60)
+
+    print(f"\nStarting server at http://localhost:{PORT}")
+    print("Press Ctrl+C to stop\n")
+
+    bottle.run(app=appWithSessions, host='0.0.0.0', port=PORT, debug=False)
