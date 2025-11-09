@@ -70,7 +70,6 @@ def home():
     # Get email from session
     session = request.environ.get('beaker.session')
     email = session.get('email', None)
-    email = None
 
     # Update HTML based on whether the user is logged in or not
     if email:
@@ -144,7 +143,6 @@ def process_query():
     # Get email from session
     session = request.environ.get('beaker.session')
     email = session.get('email', None)
-    email = None
 
     # Update HTML based on whether the user is logged in or not
     if email:
