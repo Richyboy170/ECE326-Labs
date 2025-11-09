@@ -3,10 +3,10 @@ Search Engine Frontend with Pagination
 
 This frontend provides a web interface for searching indexed documents.
 Features:
-- Search query interface with OAuth authentication
+- Search query interface
 - Results sorted by PageRank scores
 - Pagination (5 results per page)
-- Error page handling (404, 405 errors)
+- Error page handling (404 errors)
 """
 
 import json
