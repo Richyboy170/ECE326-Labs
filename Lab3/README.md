@@ -405,6 +405,24 @@ scp -i ece326-keypair.pem storage.py ubuntu@98.80.72.155:~/
 scp -i your-key.pem search_engine.db ubuntu@YOUR_PUBLIC_IP:~/
 scp -i ece326-keypair.pem search_engine.db ubuntu@98.80.72.155:~/
 ```
+## This is How to update frontend.py on EC2
+        # 1. Upload the updated frontend.py
+        scp -i ece326-keypair.pem frontend.py ubuntu@98.80.72.155:~/
+
+        # 2. SSH into the instance
+        ssh -i ece326-keypair.pem ubuntu@98.80.72.155
+
+        # 3. Once inside, kill the old process
+        pkill -f frontend.py
+
+        # 4. Restart the frontend
+        nohup python3 frontend.py > frontend.log 2>&1 &
+
+        # 5. Verify it's running
+        ps aux | grep frontend.py
+
+        # 6. Exit SSH
+        exit
 
 **Note**: You do NOT need to copy `crawler.py` or `pagerank.py` to AWS since the database is already generated.
 
