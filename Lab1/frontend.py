@@ -44,7 +44,7 @@ def process_query():
 
     # Display the current query's words and their respective number of appearences in a table
     displayHTML += "<h4> Word Count </h4>"
-    displayHTML += "<table id=”results” style=\"margin: auto; width: 25%; text-align: center; border: 1px solid black;\">"
+    displayHTML += "<table id='results' style=\"margin: auto; width: 25%; text-align: center; border: 1px solid black;\">"
     displayHTML += "<tr><th> Word </th><th> # Appearences </th></tr>"
     for word, appearences in keywordDict.items():
         displayHTML += f"<tr><td>{word}</td><td>{appearences}</td></tr>"
@@ -60,7 +60,7 @@ def process_query():
 
     # Display these top 20 words in a table
     displayHTML += "<h4> Top 20 Used Words </h4>"
-    displayHTML += "<table id=history style=\"margin: auto; width: 25%; text-align: center; border: 1px solid black;\">"
+    displayHTML += "<table id='history' style=\"margin: auto; width: 25%; text-align: center; border: 1px solid black;\">"
     displayHTML += "<tr><th> Word </th><th> # Appearences </th></tr>"
     for word, appearences in topTwentyKeywords:
         displayHTML += f"<tr><td>{word}</td><td>{appearences}</td></tr>"
