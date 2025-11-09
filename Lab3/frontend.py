@@ -193,4 +193,4 @@ def error404(error):
 def error405(error):
     return "<body style=\"text-align: center;\"><h1>Error: 405 (HTTP method not allowed)</h1><a href=\"/\">Return to EUREKA! Homepage</a></body>"
 
-bottle.run(app=appWithSessions, host='localhost', port=PORT, debug=False)
+bottle.run(app=appWithSessions, host='0.0.0.0', port=PORT, debug=False)
