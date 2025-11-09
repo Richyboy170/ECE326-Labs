@@ -16,7 +16,7 @@
         <input type="submit" value="Search">
     </form>
 
-    <h2>Results for "{{query}}" (Page {{page}})</h2>
+    <h2>Results for "{{query}}"</h2>
 
     % if not urls:
         <p>No results found.</p>

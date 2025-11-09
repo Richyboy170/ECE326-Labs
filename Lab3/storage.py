@@ -195,7 +195,7 @@ class SearchEngineDB:
         result = self.cursor.fetchone()
         return result[0] if result else None
 
-    def search_word(self, word: str, limit: int = 100, offset: int = 0) -> List[Tuple[str, str, float]]:
+    def search_word(self, word: str, limit: int = 100) -> List[Tuple[str, str, float]]:
         """
         Search for documents containing a word, sorted by PageRank
 
@@ -213,8 +213,8 @@ class SearchEngineDB:
             JOIN Lexicon l ON i.word_id = l.word_id
             WHERE l.word = ?
             ORDER BY d.page_rank DESC
-            LIMIT ? OFFSET ?
-        ''', (word, limit, offset))
+            LIMIT ?
+        ''', (word, limit))
         return self.cursor.fetchall()
 
     def get_link_graph(self) -> Dict[int, List[int]]:

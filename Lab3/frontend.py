@@ -160,29 +160,29 @@ def process_query():
         actionURL = "/login"
         loginStatus = "Not logged in"
 
-    # Get query
+    # Get query (we only use the first word)
     query = request.query.keywords or ""
     if query != "":
         query = query.split()[0]
     
-    # Get the current page number (default = 1)
+    # Get the current page number (default is 1)
     page = int(request.query.page or 1)
-    offset = (page-1)*5
-    per_page = 5
+    perPage = 5
 
+    # Get urls from database (urls come back as a list of tuples of (url, page title, pagerank))
     try:
         with get_db() as db:
-            urls = db.search_word(query, limit=per_page, offset=offset)
+            urls = db.search_word(query, limit=1000)
     except Exception as e:
         return f"<body style=\"text-align: center;\"><h1>Error: {e}</h1><a href=\"/\">Return to EUREKA! Homepage</a></body>"
 
-    start = (page - 1) * per_page
-    end = start + per_page
-    page_urls = urls[start:end]
+    # Display only select number of URLs (in our case 5)
+    start = (page - 1) * perPage
+    end = start + perPage
+    pageUrls = urls[start:end]
+    totalPages = (len(urls) + perPage - 1) // perPage or 1
 
-    total_pages = (len(urls) + per_page - 1) // per_page or 1
-
-    return template('static/resultPage.tpl', loginStatus=loginStatus, actionURL = actionURL, buttonText = buttonText, urls=page_urls, query=query, page=page, total_pages=total_pages)
+    return template('static/resultPage.tpl', loginStatus=loginStatus, actionURL = actionURL, buttonText = buttonText, urls=pageUrls, query=query, page=page, total_pages=totalPages)
 
 # Serves Logo for query page
 @app.route('/static/<filename>')
