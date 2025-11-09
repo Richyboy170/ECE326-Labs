@@ -119,7 +119,7 @@ def home():
         actionURL = "/login"
         loginStatus = "Not logged in"
 
-    return bottle.template('static/index.html', loginStatus=loginStatus, actionURL=actionURL, buttonText=buttonText)
+    return bottle.template('static/index.tpl', loginStatus=loginStatus, actionURL=actionURL, buttonText=buttonText)
 
 # If login button pressed, this function will redirect to google login screen
 if OAUTH_AVAILABLE:
