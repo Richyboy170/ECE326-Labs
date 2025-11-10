@@ -207,12 +207,12 @@ def process_query():
         loginStatus = "Not logged in"
 
     # Get query (we only use the first word)
-    query = request.query.keywords or ""
+    query = request.query.get('keywords', '').strip()
     if query != "":
-        query = query.split()[0]
+        query = query.split()[0].lower()
 
     # Get the current page number (default is 1)
-    page = int(request.query.page or 1)
+    page = int(request.query.get('page', 1))
     perPage = RESULTS_PER_PAGE
 
     # Get urls from database (urls come back as a list of tuples of (url, page title, pagerank))
@@ -269,4 +269,4 @@ if __name__ == "__main__":
     print(f"\nStarting server at http://localhost:{PORT}")
     print("Press Ctrl+C to stop\n")
 
-    bottle.run(app=appWithSessions, host='0.0.0.0', port=PORT, debug=False)
+    run(app=appWithSessions, host='0.0.0.0', port=PORT, debug=False)
