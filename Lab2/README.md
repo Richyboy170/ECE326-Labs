@@ -1,8 +1,8 @@
 # README
-IP ADDRESS: http://3.91.159.253:8080/
+IP ADDRESS: http://52.54.149.34:8080/
 
-Instance ID:  i-073ad34f99a1dfaf2
-Public IP:    3.91.159.253
+Instance ID:  i-026dd482eedbb4ffa
+Public IP:    52.54.149.34
 Key file:     ece326-keypair.pem
 
 # This is our .env file (keys are hidden):
@@ -133,14 +133,14 @@ This script will:
 ### 2. Connect to Your Instance
 
 ```bash
-ssh -i ece326-keypair.pem ubuntu@3.91.159.253
+ssh -i ece326-keypair.pem ubuntu@52.54.149.34
 ```
 
 ### 3. Copy Files to Instance
 
 ```bash
-scp -i ece326-keypair.pem frontend.py backend.py requirements.txt .env client_secret.json ubuntu@3.91.159.253:~/
-scp -i ece326-keypair.pem -r static ubuntu@3.91.159.253:~/
+scp -i ece326-keypair.pem frontend.py backend.py requirements.txt .env client_secret.json ubuntu@52.54.149.34:~/
+scp -i ece326-keypair.pem -r static ubuntu@52.54.149.34:~/
 ```
 
 ### 4. Set Up the Instance
@@ -158,7 +158,7 @@ pip install -r requirements.txt
 Edit `frontend.py` and update line 89 to use your public IP:
 
 ```python
-redirect_uri='http://3.91.159.253:8080/redirect'
+redirect_uri='http://52.54.149.34:8080/redirect'
 ```
 
 Also update your Google OAuth credentials to include this redirect URI.
@@ -169,7 +169,7 @@ Also update your Google OAuth credentials to include this redirect URI.
 python3 frontend.py
 ```
 
-Access the application at `http://3.91.159.253:8080`
+Access the application at `http://52.54.149.34:8080`
 
 ## Testing
 
