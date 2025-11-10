@@ -269,4 +269,4 @@ if __name__ == "__main__":
     print(f"\nStarting server at http://localhost:{PORT}")
     print("Press Ctrl+C to stop\n")
 
-    bottle.run(app=appWithSessions, host='0.0.0.0', port=PORT, debug=False)
+    run(app=appWithSessions, host='0.0.0.0', port=PORT, debug=False)
