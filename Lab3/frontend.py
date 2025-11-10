@@ -50,6 +50,10 @@ def get_db():
     """Get database connection"""
     return SearchEngineDB(DB_FILE)
 
+def get_db():
+    """Get database connection"""
+    return SearchEngineDB(DB_FILE)
+
 # Load the keys from environment variables
 ID = os.getenv("GOOGLE_CLIENT_ID")
 SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
@@ -73,12 +77,14 @@ else:
 DATA_FILE = "userData.json"
 
 # Function that returns data from user data JSON
+# Function that returns data from user data JSON
 def loadDataFromJSON():
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r") as f:
             return json.load(f)
     return {}
 
+# Function that saves data to user data JSON
 # Function that saves data to user data JSON
 def saveDataToJSON(data):
     with open(DATA_FILE, "w") as f:
@@ -88,6 +94,7 @@ def saveDataToJSON(data):
 userData = loadDataFromJSON()
 
 # Given a list of words, the function will update the dictionary with each appearence of the word
+# Given a list of words, the function will update the dictionary with each appearence of the word
 def updateAppearences(list, dict):
    for word in list:
        if word not in dict:
@@ -96,7 +103,15 @@ def updateAppearences(list, dict):
           dict[word] += 1
 
    return dict
+   for word in list:
+       if word not in dict:
+          dict[word] = 1
+       else:
+          dict[word] += 1
 
+   return dict
+
+# Query screen displayed when /
 # Query screen displayed when /
 @app.route('/')
 def home():
@@ -210,7 +225,7 @@ def process_query():
     query = request.query.keywords or ""
     if query != "":
         query = query.split()[0]
-
+    
     # Get the current page number (default is 1)
     page = int(request.query.page or 1)
     perPage = RESULTS_PER_PAGE
@@ -223,6 +238,8 @@ def process_query():
         return error_page(f"Database error: {e}", 500)
 
     # Display only select number of URLs (in our case 5)
+    start = (page - 1) * perPage
+    end = start + perPage
     start = (page - 1) * perPage
     end = start + perPage
     pageUrls = urls[start:end]
