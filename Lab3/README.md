@@ -403,6 +403,10 @@ scp -i ece326-keypair.pem storage.py ubuntu@204.236.209.159:~/
 
 scp -i your-key.pem search_engine.db ubuntu@YOUR_PUBLIC_IP:~/
 scp -i ece326-keypair.pem search_engine.db ubuntu@204.236.209.159:~/
+
+scp -i ece326-keypair.pem frontend.py backend.py requirements.txt .env client_secret.json ubuntu@204.236.209.159:~/
+scp -i ece326-keypair.pem -r static ubuntu@204.236.209.159:~/
+
 ```
 ## This is How to update frontend.py on EC2
         # 1. Upload the updated frontend.py
