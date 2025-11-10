@@ -11,4 +11,4 @@ We use Labs\benchmark_comparison.py to compare between Lab2 and Lab3. We added t
 
 # ECE326 Labs - Benchmark Comparison Report
 
-Lab 3 performs better than Lab 2, handling 183.79 requests per second compared to 165.14, with a faster average response time of 54.42ms versus 61.02ms. The most notable difference is in the 99th percentile latency, where Lab 3 achieves 66ms while Lab 2 takes 658.5ms, showing that Lab 3 maintains much more consistent performance under heavy load.
+Lab 3 performs better than Lab 2, handling 183.79 requests per second compared to 165.14, with a faster average response time of 54.42ms versus 61.02ms. The most notable difference is in the 99th percentile latency, where Lab 3 achieves 66ms while Lab 2 takes 658.5ms, showing that Lab 3 maintains much more consistent performance under heavy load. Both labs successfully completed all requests without any failures. Both implementations serve their purposes effectively. Lab2 prioritizes speed with in-memory operations, while Lab3 prioritizes persistence with database storage.
