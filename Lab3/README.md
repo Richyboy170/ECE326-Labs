@@ -3,7 +3,9 @@
 IP ADDRESS: http://204.236.209.159:8080
 
 Instance ID:  i-0ee9470aa16dc1a09
+
 Public IP:    204.236.209.159
+
 Key file:     ece326-keypair.pem
 
 
