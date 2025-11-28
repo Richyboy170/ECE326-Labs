@@ -1,0 +1,89 @@
+{
+  "lab2": {
+    "url": "http://3.91.159.253:8080/",
+    "results": {
+      "Home Page": {
+        "requests_per_second": 179.53,
+        "time_per_request_mean": 55.701,
+        "time_per_request_concurrent": 5.57,
+        "transfer_rate": 152.01,
+        "connection_times_mean": 31.0,
+        "failed_requests": 0.0,
+        "total_time": 5.57,
+        "complete_requests": 1000.0,
+        "time_per_request_50": 45.0,
+        "time_per_request_95": 48.0,
+        "time_per_request_99": 271.0
+      },
+      "Search Query": {
+        "requests_per_second": 150.74,
+        "time_per_request_mean": 66.341,
+        "time_per_request_concurrent": 6.634,
+        "transfer_rate": 133.96,
+        "connection_times_mean": 33.0,
+        "failed_requests": 0.0,
+        "total_time": 6.634,
+        "complete_requests": 1000.0,
+        "time_per_request_50": 46.0,
+        "time_per_request_95": 48.0,
+        "time_per_request_99": 1046.0
+      }
+    },
+    "summary": {
+      "avg_requests_per_second": 165.135,
+      "avg_response_time_ms": 61.021,
+      "avg_p99_latency_ms": 658.5,
+      "total_tests": 2
+    }
+  },
+  "lab3": {
+    "url": "http://98.80.72.155:8080/",
+    "results": {
+      "Home Page": {
+        "requests_per_second": 186.48,
+        "time_per_request_mean": 53.624,
+        "time_per_request_concurrent": 5.362,
+        "transfer_rate": 577.48,
+        "connection_times_mean": 28.0,
+        "failed_requests": 0.0,
+        "total_time": 5.362,
+        "complete_requests": 1000.0,
+        "time_per_request_50": 47.0,
+        "time_per_request_95": 49.0,
+        "time_per_request_99": 52.0
+      },
+      "Search Query": {
+        "requests_per_second": 180.89,
+        "time_per_request_mean": 55.282,
+        "time_per_request_concurrent": 5.528,
+        "transfer_rate": 770.56,
+        "connection_times_mean": 30.0,
+        "failed_requests": 0.0,
+        "total_time": 5.528,
+        "complete_requests": 1000.0,
+        "time_per_request_50": 47.0,
+        "time_per_request_95": 50.0,
+        "time_per_request_99": 78.0
+      },
+      "Search Pagination": {
+        "requests_per_second": 184.01,
+        "time_per_request_mean": 54.346,
+        "time_per_request_concurrent": 5.435,
+        "transfer_rate": 783.83,
+        "connection_times_mean": 28.0,
+        "failed_requests": 0.0,
+        "total_time": 5.435,
+        "complete_requests": 1000.0,
+        "time_per_request_50": 47.0,
+        "time_per_request_95": 51.0,
+        "time_per_request_99": 68.0
+      }
+    },
+    "summary": {
+      "avg_requests_per_second": 183.79333333333332,
+      "avg_response_time_ms": 54.41733333333334,
+      "avg_p99_latency_ms": 66.0,
+      "total_tests": 3
+    }
+  }
+}
