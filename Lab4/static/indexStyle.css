@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #e52721;
+    text-align: center;
+    font-size: 48px;
+    margin-bottom: 30px;
+}
+
+img {
+    text-align: center;
+}
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    width: 500px;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 24px 0 0 24px;
+    outline: none;
+}
+
+input[type="text"]:focus {
+    border-color: #e52721;
+    box-shadow: 0 1px 6px rgba(66, 133, 244, 0.3);
+}
+
+button {
+    padding: 12px 30px;
+    font-size: 16px;
+    background-color: #e52721;
+    color: white;
+    border: none;
+    border-radius: 0 24px 24px 0;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(207, 6, 6);
+}
+
+.info {
+    text-align: center;
+    color: #666;
+    margin-top: 20px;
+}
+
+.stats {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+}
+
+.stats h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.stats p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.Logo {
+    text-align: center;
+}
