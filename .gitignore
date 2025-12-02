@@ -32,6 +32,7 @@ Thumbs.db
 client_secret*.json
 credentials*.json
 *.pem
+Lab4/aws_credentials.env
 
 # Database
 *.db
